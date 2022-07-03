@@ -10,7 +10,6 @@ export const login = (user) => {
         },
         body: JSON.stringify(user),
     }).then((res) => {
-        if (!res.ok)
         return res.json();
     });
 };
@@ -23,7 +22,6 @@ export const existsUsername = (username) => {
         },
         body: JSON.stringify({ username }),
     }).then((res) => {
-        if (!res.ok)
         return res.json();
     });
 };
@@ -37,7 +35,6 @@ export const getAuthInfo = (token) => {
             Authorization: `Bearer ${token}`,
         },
     }).then((res) => {
-        if (!res.ok)
         return res.json();
     });
 };
@@ -68,7 +65,6 @@ export const tokenRefresh = (token) => {
             Authorization: `Bearer ${token}`,
         },
     }).then((res) => {
-        if (!res.ok)
         return res.json();
     });
 };

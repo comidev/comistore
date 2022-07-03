@@ -6,7 +6,6 @@ export const getProducts = (
     return fetch(
         `${API_URL}/products?categoryName=${categoryName}&name=${name}`
     ).then((res) => {
-        if (!res.ok)
         if (res.status === 204) return [];
         return res.json();
     });
