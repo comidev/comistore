@@ -1,14 +1,13 @@
 import { existsEmail, saveCutomer } from "api/customer";
 import { existsUsername, login } from "api/user";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { isEmail } from "services/email";
+import { ACCESS, REFRESH } from "services/token";
 
 export default function useRegister() {
     const [emailError, setEmailError] = useState("");
     const [usernameError, setUsernameError] = useState("");
     const [generalError, setGeneralError] = useState("");
-    const navigate = useNavigate();
 
     const handleChangeEmail = (e) => {
         const emailForm = e.target.value;
@@ -129,9 +128,9 @@ export default function useRegister() {
             .then((res) => login(res.user))
             .then((res) => {
                 const { access_token, refresh_token } = res;
-                window.localStorage.setItem("access_token", access_token);
-                window.localStorage.setItem("refresh_token", refresh_token);
-                navigate("/home");
+                window.localStorage.setItem(ACCESS, access_token);
+                window.localStorage.setItem(REFRESH, refresh_token);
+                window.location.replace("/home");
             });
     };
 

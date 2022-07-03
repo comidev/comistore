@@ -25,7 +25,7 @@ export default function useCart() {
 
             const invoice = { description: date, customerId, invoiceItems };
             dispatch(clear());
-            return saveInvoice(invoice);
+            return saveInvoice(invoice, token);
         });
     };
 

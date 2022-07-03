@@ -4,7 +4,8 @@ import { COLOR } from "styles";
 const AvatarContainer = styled.div`
     border-radius: 9999px;
     background-color: ${COLOR.WHITE};
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
     display: flex;
     cursor: pointer;
     &:hover {
@@ -33,6 +34,10 @@ const AvatarInfo = styled.div`
     margin-left: 0.5rem;
     font-size: 14px;
     padding-right: 10px;
+
+    @media screen and (max-width: 551px) {
+        display: none;
+    }
 `;
 
 const AvatarName = styled.span`

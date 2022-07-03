@@ -28,6 +28,7 @@ export const existsUsername = (username) => {
     });
 };
 
+//TODO: Requieren token
 export const getAuthInfo = (token) => {
     return fetch(`${USERS}/auth/info`, {
         method: "POST",
@@ -37,12 +38,30 @@ export const getAuthInfo = (token) => {
         },
     }).then((res) => {
         if (!res.ok) console.log("getAuthInfo is NOT ok!");
-        if (res.status === 401) return getTokens(getAuthInfo);
         return res.json();
     });
 };
 
-const getTokensByTokenRefresh = (token) => {
+export const updatePassword = (passwords, userId, token) => {
+    return fetch(`${USERS}/${userId}/password`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(passwords),
+    }).then((res) => {
+        if (!res.ok) {
+            console.log("updatePassword is NOT ok!");
+            if (res.status === 401) {
+                return { passwordIncorrect: true };
+            }
+            return res.json();
+        }
+        return { correct: true };
+    });
+};
+export const tokenRefresh = (token) => {
     return fetch(`${USERS}/token/refresh`, {
         method: "POST",
         headers: {
@@ -54,16 +73,14 @@ const getTokensByTokenRefresh = (token) => {
         return res.json();
     });
 };
-
-export const getTokens = (apiFunction) => {
-    const refreshToken = window.localStorage.getItem("refresh_token");
-    return getTokensByTokenRefresh(refreshToken).then(
-        ({ access_token, refresh_token }) => {
-            window.localStorage.setItem("access_token", access_token || "");
-            window.localStorage.setItem("refresh_token", refresh_token || "");
-            if (access_token) {
-                return apiFunction(access_token).then((res) => res.json());
-            }
-        }
-    );
+export const tokenValidate = (token) => {
+    return fetch(`${USERS}/token/validate`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    }).then((res) => {
+        return res.json();
+    });
 };

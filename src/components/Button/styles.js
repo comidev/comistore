@@ -7,10 +7,14 @@ const BUTTON = `
     padding: 0.6rem 1rem;
     width: 100%;
     max-width: max-content;
-    height: min-content;
-    border-radius: 0.6rem;
+    height: max-content;
+    border-radius: 4px;
     font-weight: 600;
     font-size: 15px;
+
+    @media screen and (max-width: 551px){
+        font-size: 15px;
+    }
 `;
 
 export const Button = styled.button`
@@ -62,7 +66,7 @@ export const CartButtonContainer = styled.button`
     background-color: ${COLOR.REACT};
     color: ${COLOR.WHITE};
     font-size: 2.8rem;
-    border-radius: 0.4rem;
+    border-radius: 4px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
     transition-property: transform, background-color;
@@ -105,12 +109,17 @@ export const ButtonCloseDialog = styled.button`
 `;
 
 export const Remove = styled(Button)`
+    opacity: 0.7;
     background-color: ${COLOR.BLACK};
     color: ${COLOR.WHITE};
     padding: 0.15rem 0.3rem;
-    border-radius: 0.4rem;
+    border-radius: 4px;
     font-size: 12px;
     position: absolute;
     top: 0.2rem;
     left: 0.2rem;
+
+    &:hover {
+        opacity: 1;
+    }
 `;

@@ -8,10 +8,10 @@ import { COLOR } from "styles";
 import { CartContainer, ButtonButContainer, ConfirmedContainer } from "./styles";
 import useDialog from "hooks/useDialog";
 import useCart from "hooks/useCart";
+import { getToken, hasToken } from "services/token";
 
 export default function Cart() {
     const { cart, remove, uploadInvoice, salesData } = useCart();
-
     const {
         dialogRef: modalLogin,
         open: openLogin,
@@ -31,15 +31,17 @@ export default function Cart() {
     } = useDialog();
 
     const handleBuyButton = () => {
-        const token = window.localStorage.getItem("access_token");
-        if (token) {
+        if (hasToken()) {
             //TODO: COMPRAAA!!
-            uploadInvoice(token).then(() => {
-                closeShoppingList();
-                openConfirmed();
-                setTimeout(() => {
-                    closeConfirmed();
-                }, 4000);
+            getToken().then((token) => {
+                token &&
+                    uploadInvoice(token).then(() => {
+                        closeShoppingList();
+                        openConfirmed();
+                        setTimeout(() => {
+                            closeConfirmed();
+                        }, 3000);
+                    });
             });
         } else {
             //TODO: GUARDAMOS EN EL LOCAL STORAGE

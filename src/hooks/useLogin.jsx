@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { login } from "api/user.js";
+import { ACCESS, REFRESH } from "services/token";
 
 export default function useLogin() {
     const [userError, setUserError] = useState("");
@@ -22,12 +23,12 @@ export default function useLogin() {
         if (!hasErrors) {
             login({ username, password }).then((res) => {
                 if (res.error) {
-                    setUserError(res.message);
+                    setUserError("Password incorrecto :(");
                 } else {
                     // TODO: QUÉ HAGO :'V ? HAY MUCHAS FORMAS!!!
                     const { access_token, refresh_token } = res;
-                    window.localStorage.setItem("access_token", access_token);
-                    window.localStorage.setItem("refresh_token", refresh_token);
+                    window.localStorage.setItem(ACCESS, access_token);
+                    window.localStorage.setItem(REFRESH, refresh_token);
                     window.location.replace("/home");
                 }
             });

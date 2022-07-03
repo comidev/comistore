@@ -6,6 +6,7 @@ import useCountries from "hooks/useCountries";
 import useRegister from "hooks/useRegister";
 import { useState } from "react";
 import { DAYS, MONTHS, YEARS } from "services/dates";
+import { WITHOUT_PHOTO } from "services/photo";
 import { uploadFile } from "services/uploadFile";
 import { COLOR } from "styles";
 import {
@@ -21,13 +22,13 @@ import {
     Select,
     GeneralError,
     ImgContainer,
-    InputImgContai,
+    GenderContainer,
 } from "./styles";
 
 export default function Register() {
     const { countries } = useCountries();
     const [isDrag, setIsDrag] = useState("");
-    const [photoUrl, setPhotoUrl] = useState("");
+    const [photoUrl, setPhotoUrl] = useState(WITHOUT_PHOTO);
     const [loading, setLoading] = useState(false);
 
     const {
@@ -39,7 +40,7 @@ export default function Register() {
         generalError,
     } = useRegister();
 
-    const handleRemoveURL = () => setPhotoUrl("");
+    const handleRemoveURL = () => setPhotoUrl(WITHOUT_PHOTO);
     const handleDragEnter = () => setIsDrag("enter");
     const handleDragLeaver = () => setIsDrag("leaver");
     const handleDrop = () => setIsDrag("drop");
@@ -61,7 +62,7 @@ export default function Register() {
             );
             setIsDrag("drop");
         } else {
-            setPhotoUrl("");
+            setPhotoUrl(WITHOUT_PHOTO);
             setIsDrag("leaver");
         }
     };
@@ -180,7 +181,7 @@ export default function Register() {
                     />
                 </RowTwo>
                 {/* //TODO: GENERO ------------------------ */}
-                <RowThree>
+                <GenderContainer>
                     <NameSpan>Género</NameSpan>
                     <Label>
                         <input
@@ -199,30 +200,24 @@ export default function Register() {
                         <input type={"radio"} name="generos" value="OTRO" />
                         <span>Otro</span>
                     </Label>
-                </RowThree>
+                </GenderContainer>
                 {/* //TODO: FOTO DE PERFIL ------------------------ */}
                 <ImgContainer drag={isDrag}>
-                    {photoUrl && (
-                        <>
-                            <RemoveImg onClick={handleRemoveURL}>✖</RemoveImg>
-                            <img src={photoUrl} alt="Perfil" />
-                        </>
+                    {photoUrl !== WITHOUT_PHOTO && (
+                        <RemoveImg type="button" onClick={handleRemoveURL}>
+                            ✖
+                        </RemoveImg>
                     )}
-                    <InputImgContai>
-                        <div>
-                            <span>Tu foto</span>
-                            <span>de perfil</span>
-                        </div>
-                        <input
-                            type={"file"}
-                            alt="Foto de perfil"
-                            accept="image/png, image/jpg, image/jpeg"
-                            onDragEnter={handleDragEnter}
-                            onDragLeave={handleDragLeaver}
-                            onDrop={handleDrop}
-                            onChange={handleChangeImg}
-                        />
-                    </InputImgContai>
+                    <img src={photoUrl} alt="Perfil" />
+                    <input
+                        type={"file"}
+                        alt="Foto de perfil"
+                        accept="image/png, image/jpg, image/jpeg"
+                        onDragEnter={handleDragEnter}
+                        onDragLeave={handleDragLeaver}
+                        onDrop={handleDrop}
+                        onChange={handleChangeImg}
+                    />
                 </ImgContainer>
                 <GeneralError>{generalError}</GeneralError>
                 {loading ? (

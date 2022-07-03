@@ -36,7 +36,7 @@ export default function Home() {
                     </ButtonCloseDialog>
                     <CategoriesItems>
                         <li>
-                            <CategoryItem onClick={() => searchByCategory("")}>
+                            <CategoryItem onClick={() => searchByCategory()}>
                                 Todas las categorías
                             </CategoryItem>
                         </li>

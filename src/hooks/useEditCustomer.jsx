@@ -1,7 +1,9 @@
 import { existsEmail, updateCustomer } from "api/customer";
-import { existsUsername } from "api/user";
+import { existsUsername, updatePassword } from "api/user";
 import { useState } from "react";
 import { isEmail } from "services/email";
+import { WITHOUT_PHOTO } from "services/photo";
+import { getToken } from "services/token";
 
 export default function useEditCustomer() {
     const [emailError, setEmailError] = useState("");
@@ -96,15 +98,14 @@ export default function useEditCustomer() {
         const { value: username } = usernameHTML;
 
         let password = null;
-        if (photoUrl) {
-            const { 15: passwordHTML } = e.target;
+        if (photoUrl === WITHOUT_PHOTO) {
+            const { 14: passwordHTML } = e.target;
             password = passwordHTML.value;
         } else {
-            const { 14: passwordHTML } = e.target;
+            const { 15: passwordHTML } = e.target;
             password = passwordHTML.value;
         }
 
-        console.log({ photoUrl, password });
         if (!username || usernameError.length > 0) {
             setGeneralError("Username incorrecto");
             return;
@@ -132,27 +133,53 @@ export default function useEditCustomer() {
         // TODO: La imagen no es obligatorio, puede tener o no foto :v
         if (photoUrl) customer.photoUrl = photoUrl;
 
-        console.log(customer);
-
         // TODO: Mandamos el customer por la API
-        updateCustomer(customer, customerId).then((res) => {
-            console.log(res);
-            if (res.passwordIncorrect) {
-                setGeneralError("Contraseña incorrecta");
-            } else if (res.error) {
-                setGeneralError("Campos incorrectos");
-            } else {
-                window.location.replace("/home");
-            }
+        getToken().then((token) => {
+            token &&
+                updateCustomer(customer, customerId, token).then((res) => {
+                    if (res.passwordIncorrect) {
+                        setGeneralError("Contraseña incorrecta");
+                    } else if (res.error) {
+                        setGeneralError("Campos incorrectos");
+                    } else {
+                        window.location.replace("/home");
+                    }
+                });
         });
     };
 
-    const handleChangePassword = (e) => {
+    const handleChangePassword = (e, userId) => {
         e.preventDefault();
         const [currentPasswordHTML, newPasswordHTML] = e.target;
         const { value: currentPassword } = currentPasswordHTML;
         const { value: newPassword } = newPasswordHTML;
-        console.log({ currentPassword, newPassword });
+
+        if (
+            !currentPassword ||
+            !newPassword ||
+            currentPassword.length < 3 ||
+            newPassword.length < 3
+        ) {
+            setGeneralError("Mínimo 3 caracteres");
+            return;
+        } else {
+            setGeneralError("");
+        }
+
+        const passwords = { currentPassword, newPassword };
+        getToken().then((token) => {
+            token &&
+                updatePassword(passwords, userId, token).then((res) => {
+                    if (res.passwordIncorrect) {
+                        setGeneralError("Contraseña incorrecta");
+                    } else if (res.error) {
+                        setGeneralError("Campo(s) incorrecto(s)");
+                    } else {
+                        //TODO: Perfecto :D
+                        window.location.replace("/home");
+                    }
+                });
+        });
     };
 
     return {

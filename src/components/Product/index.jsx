@@ -1,5 +1,6 @@
 import {
     ButtonBuy,
+    FormAmount,
     FormButtons,
     FormShopping,
     ProductContainer,
@@ -41,15 +42,17 @@ export default function Product({ id, name, price, photoUrl, description }) {
                 Precio<span>${price}</span>
             </ProductPrice>
             <FormShopping onSubmit={handleSubmit}>
-                <input type={"number"} value={amount} disabled />
-                <FormButtons>
-                    <button type={"button"} onClick={increment}>
-                        +
-                    </button>
-                    <button type={"button"} onClick={decrement}>
-                        -
-                    </button>
-                </FormButtons>
+                <FormAmount>
+                    <input type={"number"} value={amount} disabled />
+                    <FormButtons>
+                        <button type={"button"} onClick={increment}>
+                            +
+                        </button>
+                        <button type={"button"} onClick={decrement}>
+                            -
+                        </button>
+                    </FormButtons>
+                </FormAmount>
                 <ButtonBuy type={"submit"}>Agregar</ButtonBuy>
             </FormShopping>
         </ProductContainer>

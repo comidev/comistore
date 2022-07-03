@@ -8,6 +8,14 @@ export const HomeHeader = styled.header`
     margin: 3rem auto;
     align-items: center;
     justify-content: space-between;
+
+    @media screen and (max-width: 551px) {
+        flex-direction: column;
+
+        > button {
+            margin-bottom: 2rem;
+        }
+    }
 `;
 
 export const FormSearch = styled.form`
@@ -54,6 +62,7 @@ export const CategoryItem = styled.button`
 `;
 
 export const ProductsContainer = styled.section`
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 1rem;
 `;

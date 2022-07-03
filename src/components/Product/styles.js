@@ -3,7 +3,7 @@ import { COLOR } from "styles";
 
 export const ProductContainer = styled.article`
     width: 100%;
-    max-width: 13rem;
+    max-width: 25rem;
     margin-right: 2rem;
     margin-bottom: 2rem;
     padding: 0.5rem;
@@ -62,7 +62,7 @@ export const FormShopping = styled.form`
         font-size: 1.4rem;
         width: 3.5rem;
         padding: 0;
-        padding-left: 1rem;
+        padding-left: 0.7rem;
         border: 1px solid ${COLOR.TEXT.GRIS};
         border-radius: 6px;
         background-color: ${COLOR.TEXT.WHITE};
@@ -75,11 +75,18 @@ const FORM_BUTTONS = `
     color: ${COLOR.WHITE};
 `;
 
+export const FormAmount = styled.div`
+    display: flex;
+    width: 100%;
+    max-width: 8rem;
+`;
+
 export const FormButtons = styled.div`
     display: grid;
     gap: 0.1rem;
     margin: 0 0.3rem;
     width: 100%;
+    max-width: 3rem;
 
     button {
         ${FORM_BUTTONS}

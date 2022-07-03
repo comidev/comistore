@@ -33,11 +33,13 @@ export const saveCutomer = (customer) => {
         return res.json();
     });
 };
-export const updateCustomer = (customer, customerId) => {
+//TODO: Requiere Token
+export const updateCustomer = (customer, customerId, token) => {
     return fetch(`${CUSTOMERS}/${customerId}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(customer),
     }).then((res) => {
@@ -50,8 +52,14 @@ export const updateCustomer = (customer, customerId) => {
     });
 };
 
-export const getCustomerById = (customerId) => {
-    return fetch(`${CUSTOMERS}/${customerId}`).then((res) => {
+export const getCustomerById = (customerId, token) => {
+    return fetch(`${CUSTOMERS}/${customerId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    }).then((res) => {
         if (!res.ok) console.log("getCustomerById is NOT ok!");
         return res.json();
     });

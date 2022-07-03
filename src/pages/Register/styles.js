@@ -5,9 +5,13 @@ export const RegisterContainer = styled.section`
     width: 100%;
     max-width: 25rem;
     margin: 2rem auto;
-    padding: 1rem 2rem 2rem;
     border-radius: 0.4rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem 2rem 2rem;
+
+    @media screen and (max-width: 551px) {
+        padding: 0.5rem 0.9rem 1rem;
+    }
 `;
 
 export const RegisterForm = styled.form`
@@ -43,10 +47,14 @@ export const Input = styled.input`
 
 export const RowTwo = styled.div`
     display: grid;
-    position: relative;
     grid-template-columns: 1fr 1fr;
+    position: relative;
     gap: 20px;
     margin-bottom: 20px;
+
+    @media screen and (max-width: 401px) {
+        grid-template-columns: 1fr;
+    }
 `;
 
 export const Select = styled.select`
@@ -81,6 +89,25 @@ export const RowThree = styled.div`
     grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
     margin-bottom: 20px;
+
+    @media screen and (max-width: 315px) {
+        grid-template-columns: 4fr 5fr 5fr;
+        gap: 3px;
+    }
+`;
+
+export const GenderContainer = styled.div`
+    display: grid;
+    width: 100%;
+    position: relative;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5px;
+    margin-bottom: 20px;
+
+    @media screen and (max-width: 400px) {
+        grid-template-columns: 1fr;
+        gap: 3px;
+    }
 `;
 
 export const Label = styled.label`
@@ -125,6 +152,47 @@ export const SaveChangesPassword = styled.form`
     }
 `;
 
+export const ImgContainer = styled.div`
+    position: relative;
+    width: 5rem;
+    height: 5rem;
+    margin: 0 auto;
+    border-radius: 50%;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+
+    ${({ drag }) => {
+        if (drag === "enter") {
+            return `border: 3px dashed ${COLOR.PRIMARY};`;
+        } else if (drag === "leaver") {
+            return ``;
+        } else if (drag === "drop") {
+            return ``;
+        }
+    }}
+    &:hover {
+        border: 3px dashed ${COLOR.PRIMARY};
+    }
+
+    input {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        cursor: pointer;
+        background-color: #f15;
+        opacity: 0;
+    }
+
+    img {
+        position: absolute;
+        top: 0;
+        z-index: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+`;
+
 export const RemoveImg = styled.button`
     position: absolute;
     top: -0.4rem;
@@ -139,69 +207,6 @@ export const RemoveImg = styled.button`
 
     &:hover {
         background-color: ${COLOR.BLACK}66;
-        cursor: pointer;
-    }
-`;
-
-export const ImgContainer = styled.div`
-    position: relative;
-    width: 5rem;
-    height: 5rem;
-    margin: 0 auto;
-    border-radius: 50%;
-
-    border: 3px solid rgba(0, 0, 0, 0.1);
-    ${({ drag }) => {
-        if (drag === "enter") {
-            return `border: 3px dashed ${COLOR.PRIMARY};`;
-        } else if (drag === "leaver") {
-            return ``;
-        } else if (drag === "drop") {
-            return ``;
-        }
-    }}
-
-    img {
-        position: absolute;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-        z-index: 30;
-        &:hover {
-            opacity: 0.3;
-        }
-    }
-`;
-
-export const InputImgContai = styled.div`
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-
-    div {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        height: 100%;
-        width: 100%;
-        border-radius: 50%;
-        color: ${COLOR.BLACK};
-        font-weight: 600;
-    }
-
-    input {
-        position: absolute;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        z-index: 50;
-        opacity: 0;
         cursor: pointer;
     }
 `;

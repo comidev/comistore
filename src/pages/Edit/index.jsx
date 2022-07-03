@@ -21,7 +21,7 @@ import {
     SaveChangesPassword,
     RemoveImg,
     ImgContainer,
-    InputImgContai,
+    GenderContainer,
 } from "pages/Register/styles.js";
 import { GENDER } from "services/gender";
 import { Dialog } from "components/Dialog";
@@ -31,6 +31,8 @@ import useEditCustomer from "hooks/useEditCustomer";
 import { getAuthInfo } from "api/user";
 import { getCustomerById } from "api/customer";
 import Page404 from "components/404";
+import { WITHOUT_PHOTO } from "services/photo";
+import { getToken, hasToken } from "services/token";
 
 export default function Edit() {
     const { countries } = useCountries();
@@ -39,24 +41,26 @@ export default function Edit() {
     const [loadingCustomerInfo, setLoadingCustomerInfo] = useState(true);
     const [customer, setCustomer] = useState(null);
     const [photoUrl, setPhotoUrl] = useState("");
-    const token = window.localStorage.getItem("access_token");
 
     useEffect(() => {
-        if (token) {
-            getAuthInfo(token)
-                .then((res) => {
-                    const { customerId } = res;
-                    return getCustomerById(customerId);
-                })
-                .then((res) => {
-                    const { dateOfBirth } = res;
-                    res.dateOfBirth = new Date(dateOfBirth);
-                    setCustomer(res);
-                    setPhotoUrl(res.photoUrl);
-                    setLoadingCustomerInfo(false);
-                });
+        if (hasToken()) {
+            getToken().then((token) => {
+                token &&
+                    getAuthInfo(token)
+                        .then((res) => {
+                            const { customerId } = res;
+                            return getCustomerById(customerId, token);
+                        })
+                        .then((res) => {
+                            const { dateOfBirth } = res;
+                            res.dateOfBirth = new Date(dateOfBirth);
+                            setCustomer(res);
+                            setPhotoUrl(res.photoUrl || WITHOUT_PHOTO);
+                            setLoadingCustomerInfo(false);
+                        });
+            });
         }
-    }, [token]);
+    }, []);
 
     const {
         dialogRef: modalGuardarCambios,
@@ -80,17 +84,16 @@ export default function Edit() {
         handleChangePassword,
     } = useEditCustomer();
 
-    if (!token) {
+    if (!hasToken()) {
         return <Page404 />;
     }
 
-    const handleRemoveURL = () => setPhotoUrl("");
+    const handleRemoveURL = () => setPhotoUrl(WITHOUT_PHOTO);
     const handleDragEnter = () => setIsDrag("enter");
     const handleDragLeaver = () => setIsDrag("leaver");
     const handleDrop = () => setIsDrag("drop");
     const handleChangeImg = (e) => {
         const imgFile = e.target.files[0];
-        console.log("xd");
         if (imgFile) {
             setLoadingImg(true);
             const task = uploadFile(imgFile);
@@ -107,7 +110,7 @@ export default function Edit() {
             );
             setIsDrag("drop");
         } else {
-            setPhotoUrl("");
+            setPhotoUrl(WITHOUT_PHOTO);
             setIsDrag("leaver");
         }
     };
@@ -239,7 +242,7 @@ export default function Edit() {
                     />
                 </RowOne>
                 {/* //TODO: GENERO ------------------------ */}
-                <RowThree>
+                <GenderContainer>
                     <NameSpan>Género</NameSpan>
                     {Object.values(GENDER).map((item, index) => {
                         if (item.toUpperCase() === customer.gender) {
@@ -266,32 +269,24 @@ export default function Edit() {
                             </Label>
                         );
                     })}
-                </RowThree>
+                </GenderContainer>
                 {/* //TODO: FOTO DE PERFIL ------------------------ */}
                 <ImgContainer drag={isDrag}>
-                    {photoUrl && (
-                        <>
-                            <RemoveImg type="button" onClick={handleRemoveURL}>
-                                ✖
-                            </RemoveImg>
-                            <img src={photoUrl} alt="Perfil" />
-                        </>
+                    {photoUrl !== WITHOUT_PHOTO && (
+                        <RemoveImg type="button" onClick={handleRemoveURL}>
+                            ✖
+                        </RemoveImg>
                     )}
-                    <InputImgContai>
-                        <div>
-                            <span>Tu foto</span>
-                            <span>de perfil</span>
-                        </div>
-                        <input
-                            type={"file"}
-                            alt="Foto de perfil"
-                            accept="image/png, image/jpg, image/jpeg"
-                            onDragEnter={handleDragEnter}
-                            onDragLeave={handleDragLeaver}
-                            onDrop={handleDrop}
-                            onChange={handleChangeImg}
-                        />
-                    </InputImgContai>
+                    <img src={photoUrl} alt="Perfil" />
+                    <input
+                        type={"file"}
+                        alt="Foto de perfil"
+                        accept="image/png, image/jpg, image/jpeg"
+                        onDragEnter={handleDragEnter}
+                        onDragLeave={handleDragLeaver}
+                        onDrop={handleDrop}
+                        onChange={handleChangeImg}
+                    />
                 </ImgContainer>
                 {loadingImg ? (
                     <Spinner />
@@ -339,7 +334,8 @@ export default function Edit() {
                 <ButtonCloseDialog onClick={closeCambiarPassword} type={"button"}>
                     ✖
                 </ButtonCloseDialog>
-                <SaveChangesPassword onSubmit={handleChangePassword}>
+                <SaveChangesPassword
+                    onSubmit={(e) => handleChangePassword(e, customer.user.userId)}>
                     <span>Ingrese su contraseña</span>
                     <Input
                         type="password"

@@ -2,11 +2,13 @@ import { API_URL } from "api";
 
 const INVOICES = `${API_URL}/invoices`;
 
-export const saveInvoice = (invoice) => {
+//TODO: Requiere token
+export const saveInvoice = (invoice, token) => {
     return fetch(`${INVOICES}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(invoice),
     }).then((res) => {
@@ -15,9 +17,15 @@ export const saveInvoice = (invoice) => {
     });
 };
 
-export const findAllByCustomerId = (customerId) => {
-    return fetch(`${INVOICES}/customer/${customerId}`).then((res) => {
-        if (!res.ok) console.log("saveInvoice is NOT ok!");
+export const findAllByCustomerId = (customerId, token) => {
+    return fetch(`${INVOICES}/customer/${customerId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    }).then((res) => {
+        if (!res.ok) console.log("findAllByCustomerId is NOT ok!");
         if (res.status === 204) return [];
         return res.json();
     });

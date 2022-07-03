@@ -6,6 +6,10 @@ export const LoginContainer = styled.section`
     padding: 1rem 2rem 2rem;
     border-radius: 0.4rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    @media screen and (max-width: 551px) {
+        padding: 0.5rem 1rem 1rem;
+    }
 `;
 
 export const LoginFormContainer = styled.form`
@@ -21,7 +25,7 @@ export const LoginFormContainer = styled.form`
         border: 1px solid rgba(0, 0, 0, 0.1);
         height: 3rem;
         margin-bottom: 1.5rem;
-        padding-left: 1rem;
+        padding: 0 1rem;
         font-size: 1rem;
         background-color: ${COLOR.WHITE2};
 

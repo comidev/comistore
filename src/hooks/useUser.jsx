@@ -1,28 +1,24 @@
 import { getAuthInfo } from "api/user";
 import { useEffect, useState } from "react";
+import { ACCESS, getToken, hasToken, REFRESH } from "../services/token";
 
 export default function useUser() {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const token = window.localStorage.getItem("access_token");
-        if (token) {
-            getAuthInfo(token).then((res) => {
-                if (!res) {
-                    //?------
-                    window.location.replace("/home");
-                } else {
-                    setUser(res);
-                }
+        if (hasToken()) {
+            getToken().then((token) => {
+                token && getAuthInfo(token).then(setUser);
             });
         }
     }, []);
 
     const logout = () => {
-        window.localStorage.setItem("access_token", "");
-        window.localStorage.setItem("refresh_token", "");
+        window.localStorage.removeItem(ACCESS);
+        window.localStorage.removeItem(REFRESH);
         window.location.replace("/home");
         setUser(null);
     };
+
     return { user, logout };
 }
