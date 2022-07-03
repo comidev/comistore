@@ -23,7 +23,7 @@ export default function useLogin() {
         if (!hasErrors) {
             login({ username, password }).then((res) => {
                 if (res.error) {
-                    setUserError("Password incorrecto :(");
+                    setUserError("Credencial incorrecto :(");
                 } else {
                     // TODO: QUÉ HAGO :'V ? HAY MUCHAS FORMAS!!!
                     const { access_token, refresh_token } = res;
