@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
 
 export const Invoices = styled.section`
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 1rem;
 `;
 
 export const Invoice = styled.article`

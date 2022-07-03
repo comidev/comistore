@@ -4,7 +4,7 @@ const CUSTOMERS = `${API_URL}/customers`;
 
 export const getCountries = () => {
     return fetch(`${CUSTOMERS}/countries`).then((res) => {
-        if (!res.ok) console.log("getCountries is NOT ok!");
+        if (!res.ok)
         return res.json();
     });
 };
@@ -17,7 +17,7 @@ export const existsEmail = (email) => {
         },
         body: JSON.stringify({ email }),
     }).then((res) => {
-        if (!res.ok) console.log("existsEmail is NOT ok!");
+        if (!res.ok)
         return res.json();
     });
 };
@@ -29,7 +29,7 @@ export const saveCutomer = (customer) => {
         },
         body: JSON.stringify(customer),
     }).then((res) => {
-        if (!res.ok) console.log("saveCutomer is NOT ok!");
+        if (!res.ok)
         return res.json();
     });
 };
@@ -44,7 +44,6 @@ export const updateCustomer = (customer, customerId, token) => {
         body: JSON.stringify(customer),
     }).then((res) => {
         if (!res.ok) {
-            console.log("updateCustomer is NOT ok!");
             if (res.status === 401) return { passwordIncorrect: true };
             return res.json();
         }
@@ -60,7 +59,7 @@ export const getCustomerById = (customerId, token) => {
             Authorization: `Bearer ${token}`,
         },
     }).then((res) => {
-        if (!res.ok) console.log("getCustomerById is NOT ok!");
+        if (!res.ok)
         return res.json();
     });
 };

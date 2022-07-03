@@ -12,7 +12,7 @@ export const saveInvoice = (invoice, token) => {
         },
         body: JSON.stringify(invoice),
     }).then((res) => {
-        if (!res.ok) console.log("saveInvoice is NOT ok!");
+        if (!res.ok)
         return res.json();
     });
 };
@@ -25,7 +25,7 @@ export const findAllByCustomerId = (customerId, token) => {
             Authorization: `Bearer ${token}`,
         },
     }).then((res) => {
-        if (!res.ok) console.log("findAllByCustomerId is NOT ok!");
+        if (!res.ok)
         if (res.status === 204) return [];
         return res.json();
     });

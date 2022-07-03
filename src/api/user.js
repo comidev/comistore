@@ -10,7 +10,7 @@ export const login = (user) => {
         },
         body: JSON.stringify(user),
     }).then((res) => {
-        if (!res.ok) console.log("login is NOT ok!");
+        if (!res.ok)
         return res.json();
     });
 };
@@ -23,7 +23,7 @@ export const existsUsername = (username) => {
         },
         body: JSON.stringify({ username }),
     }).then((res) => {
-        if (!res.ok) console.log("existsUsername is NOT ok!");
+        if (!res.ok)
         return res.json();
     });
 };
@@ -37,7 +37,7 @@ export const getAuthInfo = (token) => {
             Authorization: `Bearer ${token}`,
         },
     }).then((res) => {
-        if (!res.ok) console.log("getAuthInfo is NOT ok!");
+        if (!res.ok)
         return res.json();
     });
 };
@@ -52,7 +52,6 @@ export const updatePassword = (passwords, userId, token) => {
         body: JSON.stringify(passwords),
     }).then((res) => {
         if (!res.ok) {
-            console.log("updatePassword is NOT ok!");
             if (res.status === 401) {
                 return { passwordIncorrect: true };
             }
@@ -69,7 +68,7 @@ export const tokenRefresh = (token) => {
             Authorization: `Bearer ${token}`,
         },
     }).then((res) => {
-        if (!res.ok) console.log("getTokensByTokenRefresh is NOT ok!");
+        if (!res.ok)
         return res.json();
     });
 };
